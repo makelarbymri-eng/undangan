@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan - Budi & Ani</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+        body { font-family: 'Montserrat', sans-serif; margin: 0; overflow-x: hidden; }
+        
+        section {
+            height: 100vh;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: white;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 1;
+        }
+
+        .content { z-index: 10; width: 100%; max-width: 500px; text-align: center; }
+        .font-wedding { font-family: 'Great Vibes', cursive; }
+        .text-gold { color: #d4af37; }
+        .bg-gold { background-color: #d4af37; }
+        
+        /* Loading Bar */
+        .timer-container { position: fixed; top: 0; left: 0; width: 100%; height: 5px; z-index: 2000; background: rgba(255,255,255,0.1); }
+        #loading-bar { width: 0%; height: 100%; background: #d4af37; transition: width 0.1s linear; }
+
+        /* Countdown Style */
+        .cd-box { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(5px); border-radius: 10px; padding: 10px; min-width: 65px; border: 1px solid rgba(212,175,55,0.3); }
+
+        /* Gallery */
+        .gallery-img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+        
+        /* Nav Bawah */
+        .bottom-nav {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 1000;
+            display: flex; background: rgba(255, 255, 255, 0.95); padding: 8px 15px; border-radius: 50px; gap: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        }
+        .nav-item { color: #333; font-size: 9px; text-align: center; cursor: pointer; min-width: 45px; }
+        .nav-item i { display: block; font-size: 16px; margin-bottom: 2px; }
+
+        /* Custom Form Style */
+        textarea { resize: none; color: black !important; }
+        input, select { color: black !important; }
+    </style>
+</head>
+<body>
+
+    <div class="timer-container"><div id="loading-bar"></div></div>
+    <audio id="weddingSong" loop><source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg"></audio>
+
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="manualNav('home')"><i class="fas fa-home"></i>Home</div>
+        <div class="nav-item" onclick="manualNav('mempelai')"><i class="fas fa-heart"></i>Mempelai</div>
+        <div class="nav-item" onclick="manualNav('acara')"><i class="fas fa-calendar"></i>Acara</div>
+        <div class="nav-item" onclick="manualNav('galeri')"><i class="fas fa-images"></i>Galeri</div>
+        <div class="nav-item" onclick="manualNav('rsvp')"><i class="fas fa-envelope"></i>RSVP</div>
+    </nav>
+
+    <!-- Section 1: Hero + Countdown -->
+    <section id="home" style="background-image: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80');">
+        <div class="content">
+            <h1 class="text-6xl font-wedding text-gold mb-2">Budi & Ani</h1>
+            <p class="uppercase tracking-widest text-xs mb-6">01 Januari 2027</p>
+            
+            <div class="flex justify-center gap-2 mb-8">
+                <div class="cd-box"><span id="days" class="text-xl font-bold block">0</span><small class="text-[9px]">HARI</small></div>
+                <div class="cd-box"><span id="hours" class="text-xl font-bold block">0</span><small class="text-[9px]">JAM</small></div>
+                <div class="cd-box"><span id="mins" class="text-xl font-bold block">0</span><small class="text-[9px]">MENIT</small></div>
+                <div class="cd-box"><span id="secs" class="text-xl font-bold block">0</span><small class="text-[9px]">DETIK</small></div>
+            </div>
+
+            <h2 id="guestName" class="text-2xl font-bold mb-8">Tamu Undangan</h2>
+            <button onclick="startApp()" class="bg-gold px-12 py-3 rounded-full font-bold shadow-lg tracking-widest">BUKA UNDANGAN</button>
+        </div>
+    </section>
+
+    <!-- Section 2: Mempelai -->
+    <section id="mempelai" style="background-image: url('https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80');">
+        <div class="content">
+            <h2 class="text-4xl font-wedding text-gold mb-12">Mempelai</h2>
+            <div class="space-y-6">
+                <div class="bg-black/40 p-4 rounded-2xl mx-4">
+                    <h3 class="text-3xl font-wedding text-gold">Budi Santoso</h3>
+                    <p class="text-xs mt-1">Putra Bp. Ahmad Santoso & Ibu Siti</p>
+                </div>
+                <div class="text-4xl font-wedding text-gold italic">&</div>
+                <div class="bg-black/40 p-4 rounded-2xl mx-4">
+                    <h3 class="text-3xl font-wedding text-gold">Ani Wijaya</h3>
+                    <p class="text-xs mt-1">Putri Bp. Heru Wijaya & Ibu Maya</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Acara -->
+    <section id="acara" style="background-image: url('https://images.unsplash.com/photo-1519225495810-75123122154f?q=80');">
+        <div class="content px-6">
+            <h2 class="text-4xl font-wedding text-gold mb-8">Waktu & Lokasi</h2>
+            <div class="space-y-4">
+                <div class="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/20">
+                    <h3 class="font-bold text-gold italic">Akad Nikah</h3>
+                    <p class="text-sm">08.00 - 10.00 WIB</p>
+                    <p class="text-[10px]">Masjid Agung Bandung</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/20">
+                    <h3 class="font-bold text-gold italic">Resepsi</h3>
+                    <p class="text-sm">11.00 - 14.00 WIB</p>
+                    <p class="text-[10px]">Gedung Serbaguna Bandung</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Galeri -->
+    <section id="galeri" style="background-image: url('https://images.unsplash.com/photo-1465495910483-0d6745778503?q=80');">
+        <div class="content px-4">
+            <h2 class="text-4xl font-wedding text-gold mb-6">Galeri Photo</h2>
+            <div class="grid grid-cols-2 gap-3">
+                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80" class="gallery-img">
+                <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80" class="gallery-img">
+                <img src="https://images.unsplash.com/photo-1522673607200-1648832cee98?q=80" class="gallery-img">
+                <img src="https://images.unsplash.com/photo-1510076857177-7470076d4098?q=80" class="gallery-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: RSVP + Kata Ucapan -->
+    <section id="rsvp" style="background-image: url('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80');">
+        <div class="content px-6">
+            <div class="bg-white p-6 rounded-3xl shadow-2xl text-gray-800">
+                <h2 class="text-2xl font-wedding text-gold mb-4">Konfirmasi Kehadiran</h2>
+                <form onsubmit="alert('Pesan & Konfirmasi Terkirim!'); return false;" class="space-y-3 text-left">
+                    <div>
+                        <label class="text-[10px] font-bold uppercase text-gray-400">Nama</label>
+                        <input type="text" required class="w-full border-b border-gold p-1 outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase text-gray-400">Kehadiran</label>
+                        <select class="w-full border-b border-gold p-1 outline-none text-sm">
+                            <option>Hadir</option>
+                            <option>Tidak Hadir</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase text-gray-400">Kata Ucapan & Doa</label>
+                        <textarea rows="3" placeholder="Tulis ucapan manis Anda di sini..." class="w-full border border-gray-200 rounded-lg p-2 mt-1 text-sm outline-none focus:border-gold"></textarea>
+                    </div>
+                    <button class="w-full bg-gold text-white py-3 rounded-xl font-bold shadow-lg text-sm uppercase tracking-wider">Kirim Pesan</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const sections = ['home', 'mempelai', 'acara', 'galeri', 'rsvp'];
+        let currentIndex = 0;
+        let timer = 0;
+        let isAutoScroll = false;
+        const duration = 10;
+
+        const p = new URLSearchParams(window.location.search);
+        if(p.get('to')) document.getElementById('guestName').innerText = p.get('to');
+
+        // Countdown
+        const weddingDate = new Date("Jan 1, 2027 08:00:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = weddingDate - now;
+            document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById('mins').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById('secs').innerText = Math.floor((diff % (1000 * 60)) / 1000);
+        }, 1000);
+
+        function startApp() {
+            document.getElementById('weddingSong').play();
+            isAutoScroll = true;
+            nextPage();
+            runTimer();
+        }
+
+        function runTimer() {
+            const bar = document.getElementById('loading-bar');
+            setInterval(() => {
+                if (!isAutoScroll) return;
+                timer += 0.1;
+                bar.style.width = (timer / duration) * 100 + '%';
+                if (timer >= duration) {
+                    timer = 0;
+                    nextPage();
+                }
+            }, 100);
+        }
+
+        function nextPage() {
+            if (currentIndex < sections.length - 1) {
+                currentIndex++;
+                document.getElementById(sections[currentIndex]).scrollIntoView({ behavior: 'smooth' });
+            } else { isAutoScroll = false; }
+        }
+
+        function manualNav(id) {
+            isAutoScroll = false;
+            currentIndex = sections.indexOf(id);
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
