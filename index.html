@@ -46,19 +46,23 @@
         /* Countdown Style */
         .cd-box { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(5px); border-radius: 10px; padding: 10px; min-width: 65px; border: 1px solid rgba(212,175,55,0.3); }
 
-        /* Gallery */
-        .gallery-img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; cursor: pointer; transition: 0.3s; }
-        
+        /* Gallery & Lightbox */
+        .gallery-img { width: 100%; height: 150px; object-fit: cover; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+        #lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 3000; justify-content: center; align-items: center; padding: 20px; }
+
         /* Nav Bawah */
         .bottom-nav {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 1000;
-            display: flex; background: rgba(255, 255, 255, 0.95); padding: 8px 15px; border-radius: 50px; gap: 15px;
+            display: flex; background: rgba(255, 255, 255, 0.95); padding: 8px 12px; border-radius: 50px; gap: 8px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.4);
         }
-        .nav-item { color: #333; font-size: 9px; text-align: center; cursor: pointer; min-width: 45px; }
-        .nav-item i { display: block; font-size: 16px; margin-bottom: 2px; }
+        .nav-item { color: #333; font-size: 8px; text-align: center; cursor: pointer; min-width: 42px; }
+        .nav-item i { display: block; font-size: 14px; margin-bottom: 2px; }
 
-        /* Custom Form Style */
+        /* Guest Book List */
+        #guest-list { max-height: 120px; overflow-y: auto; margin-top: 15px; }
+        .guest-item { background: #f3f4f6; border-left: 3px solid #d4af37; padding: 8px; margin-bottom: 6px; border-radius: 4px; text-align: left; }
+
         textarea { resize: none; color: black !important; }
         input, select { color: black !important; }
     </style>
@@ -68,18 +72,22 @@
     <div class="timer-container"><div id="loading-bar"></div></div>
     <audio id="weddingSong" loop><source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg"></audio>
 
+    <!-- Lightbox -->
+    <div id="lightbox" onclick="this.style.display='none'"><img id="lightbox-img" class="max-w-full max-h-[80vh] rounded-lg"></div>
+
     <nav class="bottom-nav">
         <div class="nav-item" onclick="manualNav('home')"><i class="fas fa-home"></i>Home</div>
         <div class="nav-item" onclick="manualNav('mempelai')"><i class="fas fa-heart"></i>Mempelai</div>
         <div class="nav-item" onclick="manualNav('acara')"><i class="fas fa-calendar"></i>Acara</div>
+        <div class="nav-item" onclick="manualNav('peta')"><i class="fas fa-map-marker-alt"></i>Lokasi</div>
         <div class="nav-item" onclick="manualNav('galeri')"><i class="fas fa-images"></i>Galeri</div>
         <div class="nav-item" onclick="manualNav('rsvp')"><i class="fas fa-envelope"></i>RSVP</div>
     </nav>
 
-    <!-- Section 1: Hero + Countdown -->
+    <!-- Section 1: Hero -->
     <section id="home" style="background-image: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80');">
         <div class="content">
-            <h1 class="text-6xl font-wedding text-gold mb-2">Saiful Anwar & Nur Rahmawati</h1>
+            <h1 class="text-5xl font-wedding text-gold mb-2">Saiful Anwar & Nur Rahmawati</h1>
             <p class="uppercase tracking-widest text-xs mb-6">04 Juli 2026</p>
             
             <div class="flex justify-center gap-2 mb-8">
@@ -97,13 +105,13 @@
     <!-- Section 2: Mempelai -->
     <section id="mempelai" style="background-image: url('https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80');">
         <div class="content">
-            <h2 class="text-4xl font-wedding text-gold mb-12">Mempelai</h2>
+            <h2 class="text-4xl font-wedding text-gold mb-10">Mempelai</h2>
             <div class="space-y-6">
                 <div class="bg-black/40 p-4 rounded-2xl mx-4">
                     <h3 class="text-3xl font-wedding text-gold">Saiful Anwar</h3>
                     <p class="text-xs mt-1">Putra (Alm) Bp. Samlawi & Ibu Marsih</p>
                 </div>
-                <div class="text-4xl font-wedding text-gold italic">&</div>
+                <div class="text-3xl font-wedding text-gold italic">&</div>
                 <div class="bg-black/40 p-4 rounded-2xl mx-4">
                     <h3 class="text-3xl font-wedding text-gold">Nur Rahmawati</h3>
                     <p class="text-xs mt-1">Putri (Alm) Bp. Hambali & Ibu Neneng Chotimah</p>
@@ -117,62 +125,67 @@
         <div class="content px-6">
             <h2 class="text-4xl font-wedding text-gold mb-8">Waktu & Lokasi</h2>
             <div class="space-y-4">
-                <div class="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/20">
+                <div class="bg-white/10 backdrop-blur-md p-4 rounded-3xl border border-white/20">
                     <h3 class="font-bold text-gold italic">Akad Nikah</h3>
-                    <p class="text-sm">08.00 - selesai WIB</p>
-                    <p class="text-[10px]">Tempat Mempelai Wanita : Jl. Cipeucang 3 No. 33 RT.007 RW.013 Jakarta Utara</p>
+                    <p class="text-xs">Tempat Wanita: Jl. Cipeucang 3 Jakarta Utara</p>
                 </div>
-                <div class="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/20">
+                <div class="bg-white/10 backdrop-blur-md p-4 rounded-3xl border border-white/20">
                     <h3 class="font-bold text-gold italic">Resepsi</h3>
-                    <p class="text-sm">11.00 - selesai WIB</p>
-                    <p class="text-[10px]">Tempat Mempelai Pria : Jl. B. Terusan No.10 RT. 004 RW 011 Jakarta Utara</p>
+                    <p class="text-xs">Tempat Pria: Jl. B. Terusan Jakarta Utara</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Section 4: Galeri -->
+    <!-- Section 4: Google Maps (NEW) -->
+    <section id="peta" style="background-image: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80');">
+        <div class="content px-4 w-full">
+            <h2 class="text-4xl font-wedding text-gold mb-6 text-white">Lokasi Acara</h2>
+            <div class="bg-white p-2 rounded-2xl shadow-2xl">
+                <!-- Frame Peta Jakarta Utara -->
+                <iframe width="100%" height="220" frameborder="0" style="border:0; border-radius:12px;" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.04257125301!2d106.9080272!3d-6.1249764!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMDcnMzAuMCJTIDEwNiw1NCcyOC45IkU!5e0!3m2!1sid!2sid!4v1700000000000" 
+                    allowfullscreen></iframe>
+            </div>
+            <a href="https://maps.app.goo.gl/YourGoogleMapLink" target="_blank" class="inline-block mt-6 bg-gold text-white px-8 py-3 rounded-full font-bold text-xs shadow-lg">
+                <i class="fas fa-directions mr-2"></i>PETUNJUK JALAN (MAPS)
+            </a>
+        </div>
+    </section>
+
+    <!-- Section 5: Galeri -->
     <section id="galeri" style="background-image: url('https://images.unsplash.com/photo-1465495910483-0d6745778503?q=80');">
         <div class="content px-4">
             <h2 class="text-4xl font-wedding text-gold mb-6">Galeri Photo</h2>
-            <div class="grid grid-cols-2 gap-3">
-                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80" class="gallery-img">
-                <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80" class="gallery-img">
-                <img src="https://images.unsplash.com/photo-1522673607200-1648832cee98?q=80" class="gallery-img">
-                <img src="https://images.unsplash.com/photo-1510076857177-7470076d4098?q=80" class="gallery-img">
+            <div class="grid grid-cols-2 gap-2">
+                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80" class="gallery-img" onclick="openLightbox(this.src)">
+                <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80" class="gallery-img" onclick="openLightbox(this.src)">
+                <img src="https://images.unsplash.com/photo-1522673607200-1648832cee98?q=80" class="gallery-img" onclick="openLightbox(this.src)">
+                <img src="https://images.unsplash.com/photo-1510076857177-7470076d4098?q=80" class="gallery-img" onclick="openLightbox(this.src)">
             </div>
         </div>
     </section>
 
-    <!-- Section 5: RSVP + Kata Ucapan -->
+    <!-- Section 6: RSVP -->
     <section id="rsvp" style="background-image: url('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80');">
-        <div class="content px-6">
-            <div class="bg-white p-6 rounded-3xl shadow-2xl text-gray-800">
-                <h2 class="text-2xl font-wedding text-gold mb-4">Konfirmasi Kehadiran</h2>
-                <form onsubmit="alert('Pesan & Konfirmasi Terkirim!'); return false;" class="space-y-3 text-left">
-                    <div>
-                        <label class="text-[10px] font-bold uppercase text-gray-400">Nama</label>
-                        <input type="text" required class="w-full border-b border-gold p-1 outline-none text-sm">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold uppercase text-gray-400">Kehadiran</label>
-                        <select class="w-full border-b border-gold p-1 outline-none text-sm">
-                            <option>Hadir</option>
-                            <option>Tidak Hadir</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold uppercase text-gray-400">Kata Ucapan & Doa</label>
-                        <textarea rows="3" placeholder="Tulis ucapan manis Anda di sini..." class="w-full border border-gray-200 rounded-lg p-2 mt-1 text-sm outline-none focus:border-gold"></textarea>
-                    </div>
-                    <button class="w-full bg-gold text-white py-3 rounded-xl font-bold shadow-lg text-sm uppercase tracking-wider">Kirim Pesan</button>
+        <div class="content px-6 overflow-y-auto pt-10">
+            <div class="bg-white p-6 rounded-3xl shadow-2xl text-gray-800 mb-20">
+                <h2 class="text-2xl font-wedding text-gold mb-4">RSVP & Ucapan</h2>
+                <form id="rsvpForm" class="space-y-3 text-left">
+                    <input type="text" id="inputNama" placeholder="Nama Anda" required class="w-full border-b border-gold p-1 outline-none text-sm">
+                    <select id="inputHadir" class="w-full border-b border-gold p-1 outline-none text-sm">
+                        <option>Hadir</option><option>Tidak Hadir</option>
+                    </select>
+                    <textarea id="inputPesan" rows="2" placeholder="Tulis ucapan & doa..." class="w-full border border-gray-200 rounded-lg p-2 text-sm outline-none focus:border-gold"></textarea>
+                    <button type="submit" class="w-full bg-gold text-white py-2 rounded-xl font-bold text-xs uppercase tracking-widest">Kirim</button>
                 </form>
+                <div id="guest-list"></div>
             </div>
         </div>
     </section>
 
     <script>
-        const sections = ['home', 'mempelai', 'acara', 'galeri', 'rsvp'];
+        const sections = ['home', 'mempelai', 'acara', 'peta', 'galeri', 'rsvp'];
         let currentIndex = 0;
         let timer = 0;
         let isAutoScroll = false;
@@ -182,7 +195,7 @@
         if(p.get('to')) document.getElementById('guestName').innerText = p.get('to');
 
         // Countdown
-        const weddingDate = new Date("Jul 14, 2026 08:00:00").getTime();
+        const weddingDate = new Date("Jul 4, 2026 08:00:00").getTime();
         setInterval(() => {
             const now = new Date().getTime();
             const diff = weddingDate - now;
@@ -224,6 +237,25 @@
             currentIndex = sections.indexOf(id);
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
+
+        function openLightbox(src) {
+            isAutoScroll = false;
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        // RSVP Logic
+        document.getElementById('rsvpForm').onsubmit = (e) => {
+            e.preventDefault();
+            const nama = document.getElementById('inputNama').value;
+            const pesan = document.getElementById('inputPesan').value;
+            const item = document.createElement('div');
+            item.className = 'guest-item';
+            item.innerHTML = `<p class="text-[10px] font-bold text-gold">${nama}</p><p class="text-[10px] italic text-gray-600">${pesan}</p>`;
+            document.getElementById('guest-list').prepend(item);
+            document.getElementById('rsvpForm').reset();
+            alert('Terima kasih atas konfirmasi dan doanya!');
+        };
     </script>
 </body>
 </html>
